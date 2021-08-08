@@ -11,3 +11,4 @@ data class RegistrationRequest(
     var password:String
 
 )
+

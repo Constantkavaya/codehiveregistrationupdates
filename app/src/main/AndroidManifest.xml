@@ -17,7 +17,7 @@
         tools:ignore="ExtraText">
         <activity android:name=".loginActivity"
             tools:ignore="Instantiatable" />
-        <activity android:name=".coursesActivity" />
+        <activity android:name=".ui.coursesActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

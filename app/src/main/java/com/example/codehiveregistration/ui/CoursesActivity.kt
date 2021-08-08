@@ -1,10 +1,12 @@
-package com.example.codehiveregistration
+package com.example.codehiveregistration.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.codehiveregistration.Courses
+import com.example.codehiveregistration.CoursesAdapter
+import com.example.codehiveregistration.R
 
 class coursesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +23,7 @@ class coursesActivity : AppCompatActivity() {
 
 
             )
-            var coursesAdapter=CoursesAdapter(courseList)
+            var coursesAdapter= CoursesAdapter(courseList)
             rvcourses.layoutManager= LinearLayoutManager(baseContext)
             rvcourses.adapter=coursesAdapter
 }

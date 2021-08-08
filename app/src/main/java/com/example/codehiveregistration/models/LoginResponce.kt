@@ -1,4 +1,12 @@
 package com.example.codehiveregistration.models
 
-data class LoginResponce(var Email:String,
-                         var Password:String)
+import com.google.gson.annotations.SerializedName
+
+data class LoginResponce(
+    var message: String,
+@SerializedName("access_token")
+var accessToken: String,
+@SerializedName("student_id")
+var studentId: String,
+var Email:String,
+var Password:String)
