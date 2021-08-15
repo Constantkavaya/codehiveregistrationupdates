@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.inflate
 import android.widget.*
+import androidx.activity.viewModels
 import com.example.codehiveregistration.api.ApiClient
 import com.example.codehiveregistration.api.ApiInteface
+import com.example.codehiveregistration.databinding.ActivityMainBinding
 import com.example.codehiveregistration.models.RegistrationRequest
 import com.example.codehiveregistration.models.RegistrationResponce
 import com.example.codehiveregistration.viewModel.UserViewModel
@@ -15,11 +17,56 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ActivityMainBinding : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     val userViewModel: UserViewModel by viewModels()
 
-    //    lateinit var Name: EditText
+    @SuppressLint("WrongViewCast")
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.btnregister.setOnClickListener {
+            registerStudent()
+        }
+
+    }
+    fun  registerStudent(){
+
+          var  name = binding.etname.toString()
+         var   phoneNumber = binding.etphonenumber.text.toString()
+           var email = binding.etemail.toString()
+           var dateOfBirth = binding.etdob.text.toString()
+          var  password = binding.etpassword.text.toString()
+           var nationality = binding.spnationality.toString()
+
+        var regRequest = RegistrationRequest(
+            name = name,
+            phoneNumber = phoneNumber,
+            password = password,
+            nationality=nationality,
+            dateOfBirth=dateOfBirth,
+            email = email
+
+        )
+
+        userViewModel.registerUser(regRequest)
+        userViewModel.registrationLiveData.observe(this,{ regResponse ->
+            if (!regResponse.studentId.isNullOrEmpty()) {
+                Toast.makeText(baseContext, "Registration successful", Toast.LENGTH_LONG).show()
+                }
+            })
+        userViewModel.regFailedLiveData.observe(this, { error ->
+            Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
+        })
+    }
+}
+//    lateinit var Name: EditText
 //    lateinit var dob: EditText
 //    lateinit var etpassword: EditText
 //    lateinit var spNationality: Spinner
@@ -32,36 +79,6 @@ class ActivityMainBinding : AppCompatActivity() {
 //
 //        castViews()
 //        clickregister()
-    @SuppressLint("WrongViewCast")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.btnRegister.setOnClickListener {
-            var regRequest = RegistrationRequest(
-                name = binding.etname.toString(),
-                phoneNumber = binding.etphonenumber.text.toString(),
-                email = binding.etemail.toString(),
-                dateOfBirth = binding.etdob.text.toString(),
-                password = binding.etpassword.text.toString()
-            )
-            userViewModel.registerStudent(regRequest)
-        }
-        userViewModel.registrationLiveData.observe(this,{ regResponse ->
-            if (!regResponse.studentId.isNullOrEmpty()) {
-                Toast.makeText(baseContext, "Registration successful", Toast.LENGTH_LONG).show()
-            }
-        })
-        userViewModel.regFailedLiveData.observe(this, { error ->
-            Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-        })
-    }
-}
 
 //    fun castViews() {
 //        Name = findViewById(R.id.etname)

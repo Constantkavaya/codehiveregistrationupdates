@@ -17,12 +17,11 @@ class UserRepository {
     var apiInterface = ApiClient.buildApiClient(ApiInteface::class.java)
 
     suspend fun registerStudent(registrationRequest: RegistrationRequest):
-            Call<RegistrationResponce> = withContext(Dispatchers.IO){
-        var response = apiInterface.registerStudent(registrationRequest)
+            Response<RegistrationResponce> = withContext(Dispatchers.IO){
+        var response= apiInterface.registerStudent(registrationRequest)
         return@withContext response
     }
-
-    suspend fun login(logInRequest: LoginRequest): Call<LoginResponce> =
+    suspend fun login(logInRequest: LoginRequest): Response<LoginResponce> =
         withContext(Dispatchers.IO){
             var response = apiInterface.logiStudent(logInRequest)
             return@withContext response

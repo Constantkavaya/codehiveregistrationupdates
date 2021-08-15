@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.example.codehiveregistration.models.LoginRequest
 import com.example.codehiveregistration.models.LoginResponce
 import com.example.codehiveregistration.repository.UserRepository
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
 
 class LoginViewModel : ViewModel() {
     var logInLiveData = MutableLiveData<LoginResponce>()
@@ -12,7 +14,6 @@ class LoginViewModel : ViewModel() {
     var userRepository = UserRepository()
 
     fun logIn(logInRequest: LoginRequest){
-        var viewModelScope = null
         viewModelScope.launch{
             var response = userRepository.login(logInRequest)
             if (response.isSuccessful){

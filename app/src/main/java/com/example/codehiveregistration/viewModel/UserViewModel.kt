@@ -13,9 +13,9 @@ class UserViewModel : ViewModel() {
     var regFailedLiveData = MutableLiveData<String>()
     var userRepository = UserRepository()
 
-    fun registerStudent(registrationRequest: RegistrationRequest){
+    fun registerUser(registrationRequest: RegistrationRequest){
         viewModelScope.launch{
-            var response = userRepository.registerStudent(RegistrationRequest())
+            var response = userRepository.registerStudent(registrationRequest)
             if (response.isSuccessful){
                 registrationLiveData.postValue(response.body())
             }

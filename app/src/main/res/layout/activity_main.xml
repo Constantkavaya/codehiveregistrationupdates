@@ -73,15 +73,18 @@
         app:srcCompat="@drawable/ic_baseline_outlined_flag_24" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spnationality"
         android:layout_width="358dp"
         android:layout_height="59dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout8" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout8"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/imageView14"
@@ -103,7 +106,7 @@
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView14"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2">
+        app:layout_constraintTop_toBottomOf="@+id/spnationality">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etphonenumber"
