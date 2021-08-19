@@ -6,6 +6,7 @@ import com.example.codehiveregistration.Courses
 import com.example.codehiveregistration.repository.UserRepository
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
+import com.example.codehiveregistration.models.CoursesRequest
 
 
 class CoursesViewModel : ViewModel() {
@@ -14,9 +15,9 @@ class CoursesViewModel : ViewModel() {
     var coursesRepository =UserRepository()
 
 
-    fun coursesList(){
+    fun courses(){
         viewModelScope.launch{
-            var response = UserRepository.courses()
+            var response = UserRepository.courses(CoursesRequest)
             if (response.isSuccessful){
                 coursesLiveData.postValue(response.body())
             }

@@ -1,12 +1,15 @@
 package com.example.codehiveregistration
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.inflate
 import android.widget.*
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.example.codehiveregistration.api.ApiClient
 import com.example.codehiveregistration.api.ApiInteface
 import com.example.codehiveregistration.databinding.ActivityMainBinding
@@ -26,6 +29,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        var sharedPreferences = getSharedPreferences(Constants.SHAREDPREFS, MODE_PRIVATE)
+
+
+    }
+    fun  redirectUser(){
+        var accessToken=sharedPreferences.getString(Constants.ACCESS_TOKEN,Constants.EMPTY_STRING)
+        if (accessToken!!.isNotEmpty()){
+            ContextCompat.startActivity(Intent(baseContext,loginActivity::class))
+        }
 
     }
 
@@ -66,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
+
 //    lateinit var Name: EditText
 //    lateinit var dob: EditText
 //    lateinit var etpassword: EditText
