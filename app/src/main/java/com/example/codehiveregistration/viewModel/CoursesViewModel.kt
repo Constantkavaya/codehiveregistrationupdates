@@ -6,17 +6,20 @@ import com.example.codehiveregistration.Courses
 import com.example.codehiveregistration.repository.UserRepository
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
+import com.example.codehiveregistration.models.CoursesRequest
+import com.example.codehiveregistration.repository.CoursesRepisitory
 
 
 class CoursesViewModel : ViewModel() {
     var coursesLiveData = MutableLiveData<List<Courses>>()
     var coursesFailedLiveData = MutableLiveData<String>()
-    var coursesRepository =UserRepository()
+    var coursesRepository =CoursesRepisitory()
 
 
-    fun coursesList(){
+    fun courses(){
         viewModelScope.launch{
-            var response = UserRepository.courses()
+            var accessToken = null
+            var response = CoursesRepisitory.getcourses(accessToken)
             if (response.isSuccessful){
                 coursesLiveData.postValue(response.body())
             }

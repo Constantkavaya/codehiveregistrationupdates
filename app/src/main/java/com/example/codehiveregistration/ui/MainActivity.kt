@@ -1,12 +1,20 @@
 package com.example.codehiveregistration
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings.Global.getString
+import android.provider.Settings.Secure.getString
+import android.provider.Settings.System.getString
 import android.view.View.inflate
 import android.widget.*
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.res.TypedArrayUtils.getString
 import com.example.codehiveregistration.api.ApiClient
 import com.example.codehiveregistration.api.ApiInteface
 import com.example.codehiveregistration.databinding.ActivityMainBinding
@@ -16,6 +24,7 @@ import com.example.codehiveregistration.viewModel.UserViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.nio.file.Paths.get
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -26,13 +35,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        var sharedPreferences = getSharedPreferences(Constants.SHAREDPREFS, MODE_PRIVATE)
+
+
+    }
+    fun  redirectUser(){
+        var accessToken= SharedPreferences.getString(Constants.ACCESS_TOKEN,Constants.EMPTY_STRING)
+        if (accessToken!!.isNotEmpty()){
+            ContextCompat.startActivity(Intent(baseContext,LoginActivity::class))
+        }
 
     }
 
     override fun onResume() {
         super.onResume()
         binding.btnregister.setOnClickListener {
-            registerStudent()
+                    binding.etphonenumber.text.toString().isEmpty()||
+                    binding.etemail.text.toString().isEmpty() ||
+                    binding.etpassword.text.toString().isEmpty()
+
+                    binding.etname.setError("Name required")
+                    binding.etdob.setError("Date of birth required")
+                    registerStudent()
+
         }
 
     }
@@ -64,8 +89,10 @@ class MainActivity : AppCompatActivity() {
         userViewModel.regFailedLiveData.observe(this, { error ->
             Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
         })
+
     }
 }
+
 //    lateinit var Name: EditText
 //    lateinit var dob: EditText
 //    lateinit var etpassword: EditText

@@ -11,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 class LoginViewModel : ViewModel() {
     var logInLiveData = MutableLiveData<LoginResponce>()
     var logInFailedLiveData = MutableLiveData<String>()
+    var logInErrorLiveData = MutableLiveData<String>()
+    var tvLogInError = MutableLiveData<String>()
     var userRepository = UserRepository()
 
     fun logIn(logInRequest: LoginRequest){
@@ -21,6 +23,7 @@ class LoginViewModel : ViewModel() {
             }
             else{
                 logInFailedLiveData.postValue(response.errorBody()?.string())
+                logInErrorLiveData.postValue(response.errorBody()?.string())
             }
         }
     }

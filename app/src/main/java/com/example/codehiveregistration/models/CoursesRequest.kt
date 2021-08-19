@@ -2,7 +2,8 @@ package com.example.codehiveregistration.models
 
 import com.google.gson.annotations.SerializedName
 
-data class CoursesRequest(
+data class
+CoursesRequest(
     @SerializedName("courses_name")var CoursesName:String,
     @SerializedName("courses_description")var Coursesdescription:String,
     var Instructor:String,
