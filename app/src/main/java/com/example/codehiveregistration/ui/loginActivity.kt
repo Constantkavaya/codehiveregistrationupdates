@@ -33,6 +33,7 @@ class  LoginActivity : AppCompatActivity() {
         btnlogin.setOnClickListener {
             var intent = Intent(baseContext, coursesActivity::class.java)
             startActivity(intent)
+//            validateLogin()
 
 
         }
@@ -52,58 +53,84 @@ class  LoginActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        logInViewModel.logInLiveData.observe(this, { logInResponse->
-        binding.btnlogin.setOnLongClickListener {
-            binding.tvLogInError.visibility = View.GONE
-            validateLogIn()
-        }
+//        logInViewModel.logInLiveData.observe(this, { logInResponse->
+//        binding.btnlogin.setOnLongClickListener {
+//            binding.tvLogInError.visibility = View.GONE
+//            validateLogIn()
+//        }
+        binding.btnlogin.setOnLongClickListener (
+            binding.tvLoginError.visibility = View.GONE
+        )
+
+        LoginViewModel.logInLiveData.observe(this, { LoginResponce ->
+            binding.progressBar.visibility = View.GONE
+            Toast.makeText(baseContext, LoginResponce.message, Toast.LENGTH_LONG).show()
+            var accessToken = LoginResponce.Access_Token
+            sharedPreferences.edit().putString("ACCESS_TOKEN", accessToken).apply()
+            var x = sharedPreferences.getString("ACCESS_TOKEN", "")
+            var editor = sharedPreferences.edit()
+            sharedPreferences.edit().putString(Constants.ACCESS_TOKEN, LoginResponce.accessToken)
+                .apply()
+            editor.putString(Constants.ACCESS_TOKEN, LoginResponce.accessToken)
+            editor.putString(STUDENT_ID, LoginResponce.STUDENTID)
+            editor.apply()
+            startActivity(Intent(baseContext, coursesActivity::class.java))
 
 
-
-    LoginViewModel.logInLiveData.observe(this, {LoginResponce->
-        binding.root.visibility = View.GONE
-        Toast.makeText(baseContext, LoginResponce.message, Toast.LENGTH_LONG).show()
-        var accessToken = LoginResponce.Access_Token
-        sharedPreferences.edit().putString("ACCESS_TOKEN", accessToken).apply()
-        var x = sharedPreferences.getString("ACCESS_TOKEN", "")
-        var editor = sharedPreferences.edit()
-        sharedPreferences.edit().putString(Constants.ACCESS_TOKEN, LoginResponce.accessToken).apply()
-        editor.putString(Constants.ACCESS_TOKEN, LoginResponce.accessToken)
-        editor.putString(STUDENT_ID, LoginResponce.STUDENTID)
-        editor.apply()
-        startActivity(Intent(baseContext,coursesActivity::class.java))
-
-
-    logInViewModel.logInFailedLiveData.observe(this, { error ->
-        Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-        logInViewModel.logInErrorLiveData.observe(this, { error ->
+            logInViewModel.logInFailedLiveData.observe(this, { error ->
+                Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
+                logInViewModel.logInErrorLiveData.observe(this, { error ->
 //        Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-            binding.tvLogInError.visibility = View.VISIBLE
-            binding.tvLogInError.text = error
-            binding.tvLogInError.text = error
+                    binding.tvLoginError.visibility = View.VISIBLE
+                    binding.tvLoginError.text = error
+                    binding.tvLoginError.text = error
+                })
+                val intent = Intent(baseContext, coursesActivity::class.java)
+                startActivity(intent)
+
+                fun validateLogin() {
+                    var email = binding.etemmail.text.toString()
+                    var password = binding.etpasswrd.text.toString()
+                    var error = false
+                    if (password.isBlank() || email.isBlank())
+
+                        logInViewModel.logInLiveData.observe(this, { logInResponse ->
+                            Toast.makeText(baseContext, logInResponse.message, Toast.LENGTH_LONG)
+                                .show()
+
+                            var editor = logInResponse.accessToken
+                            sharedPreferences.edit()
+                                .putString("ACCESS_TOKEN", logInResponse.accessToken)
+                                .apply()
+                            var x = sharedPreferences.getString("ACCESS_TOKEN", "")
+                        })
+                    fun validateLogIn() {
+                        var email = binding.etemmail.text.toString()
+                        var password = binding.etpasswrd.text.toString()
+                        var error = false
+
+                        if (email.isBlank() || email.isEmpty()) {
+                            var error = true
+                            binding.etemmail.setError("Email is required")
+                        }
+                        if (password.isBlank() || password.isEmpty()) {
+                            var error = true
+                            binding.etemmail.setError("Password is required")
+                        }
+                        if (!error) {
+                            binding.root.visibility = View.GONE
+                        }
+                    }
+
+                }
+            })
+
         })
-        val intent = Intent(baseContext, coursesActivity::class.java)
-        startActivity(intent)
-
-
-
-    fun validateLogIn(){
-        var email = binding.etemmail.text.toString()
-        var password = binding.etpasswrd.text.toString()
-        var error = false
-
-        if (email.isBlank() || email.isEmpty()){
-            var error = true
-            binding.etemmail.setError("Email is required")
-        }
-        if (password.isBlank() || password.isEmpty()){
-            var error = true
-            binding.etemmail.setError("Password is required")
-        }
-        if (!error){
-            binding.root.visibility = View.GONE
-        }
     }
+}
+
+
+
 
 
 

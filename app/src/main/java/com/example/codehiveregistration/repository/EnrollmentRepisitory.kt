@@ -5,18 +5,13 @@ import android.content.SharedPreferences
 import com.example.codehiveregistration.R
 import com.example.codehiveregistration.api.ApiClient
 import com.example.codehiveregistration.api.ApiInteface
-import com.example.codehiveregistration.models.CoursesRequest
-import com.example.codehiveregistration.models.CoursesResponse
-import com.example.codehiveregistration.models.LoginResponce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 
-class CoursesRepisitory {
-
+class EnrollmentRepisitory {
     lateinit var sessionManager: SessionManager
     var apiInterface = ApiClient.buildApiClient(ApiInteface::class.java)
-    suspend fun getcourses(): Unit = withContext(Dispatchers.IO) {
+    suspend fun getEnrollment(): Unit = withContext(Dispatchers.IO) {
         var response =
             apiInterface.getcourses(token = "Bearer ${sessionManager.fetchAuthentication()}")
         return@withContext response
@@ -42,4 +37,5 @@ class CoursesRepisitory {
         }
 
     }
+}
 }

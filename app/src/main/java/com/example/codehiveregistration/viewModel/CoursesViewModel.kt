@@ -10,6 +10,7 @@ import com.example.codehiveregistration.models.CoursesRequest
 import com.example.codehiveregistration.repository.CoursesRepisitory
 
 
+
 class CoursesViewModel : ViewModel() {
     var coursesLiveData = MutableLiveData<List<Courses>>()
     var coursesFailedLiveData = MutableLiveData<String>()
@@ -19,7 +20,9 @@ class CoursesViewModel : ViewModel() {
     fun courses(){
         viewModelScope.launch{
             var accessToken = null
-            var response = CoursesRepisitory.getcourses(accessToken)
+            var Response = CoursesRepisitory.getcourses(accessToken)
+            var response = UserRepository.courses(CoursesRequest)
+
             if (response.isSuccessful){
                 coursesLiveData.postValue(response.body())
             }

@@ -21,4 +21,9 @@ class UserRepository {
             return@withContext response
         }
 
+    suspend fun getcourses(coursesRequest: CoursesRequest):
+            Response<LoginResponce> = withContext(Dispatchers.IO){
+            var response = apiInterface.logiStudent()
+            return@withContext response
+        }
 }

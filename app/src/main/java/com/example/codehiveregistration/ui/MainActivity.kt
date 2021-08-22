@@ -31,65 +31,66 @@ class MainActivity : AppCompatActivity() {
     val userViewModel: UserViewModel by viewModels()
 
     @SuppressLint("WrongViewCast")
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         var sharedPreferences = getSharedPreferences(Constants.SHAREDPREFS, MODE_PRIVATE)
-
-
+//        registerStudent()
     }
-    fun  redirectUser(){
-        var accessToken= SharedPreferences.getString(Constants.ACCESS_TOKEN,Constants.EMPTY_STRING)
-        if (accessToken!!.isNotEmpty()){
-            ContextCompat.startActivity(Intent(baseContext,LoginActivity::class))
+
+    fun redirectUser() {
+        var accessToken =
+            SharedPreferences.getString(Constants.ACCESS_TOKEN, Constants.EMPTY_STRING)
+        if (accessToken!!.isNotEmpty()) {
+            ContextCompat.startActivity(Intent.(baseContext,LoginActivity::class))
         }
 
-    }
+        fun onResume() {
+            super.onResume()
+            binding.btnregister.setOnClickListener {
+                binding.etphonenumber.text.toString().isEmpty() ||
+                        binding.etemail.text.toString().isEmpty() ||
+                        binding.etpassword.text.toString().isEmpty()
 
-    override fun onResume() {
-        super.onResume()
-        binding.btnregister.setOnClickListener {
-                    binding.etphonenumber.text.toString().isEmpty()||
-                    binding.etemail.text.toString().isEmpty() ||
-                    binding.etpassword.text.toString().isEmpty()
+                binding.etname.setError("Name required")
+                binding.etdob.setError("Date of birth required")
 
-                    binding.etname.setError("Name required")
-                    binding.etdob.setError("Date of birth required")
-                    registerStudent()
+
+            }
 
         }
 
-    }
-    fun  registerStudent(){
+        fun registerStudent() {
 
-          var  name = binding.etname.toString()
-         var   phoneNumber = binding.etphonenumber.text.toString()
-           var email = binding.etemail.toString()
-           var dateOfBirth = binding.etdob.text.toString()
-          var  password = binding.etpassword.text.toString()
-           var nationality = binding.spnationality.toString()
+            var name = binding.etname.toString()
+            var phoneNumber = binding.etphonenumber.text.toString()
+            var email = binding.etemail.toString()
+            var dateOfBirth = binding.etdob.text.toString()
+            var password = binding.etpassword.text.toString()
+            var nationality = binding.spnationality.toString()
 
-        var regRequest = RegistrationRequest(
-            name = name,
-            phoneNumber = phoneNumber,
-            password = password,
-            nationality=nationality,
-            dateOfBirth=dateOfBirth,
-            email = email
+            var regRequest = RegistrationRequest(
+                name = name,
+                phoneNumber = phoneNumber,
+                password = password,
+                nationality = nationality,
+                dateOfBirth = dateOfBirth,
+                email = email
 
-        )
+            )
 
-        userViewModel.registerUser(regRequest)
-        userViewModel.registrationLiveData.observe(this,{ regResponse ->
-            if (!regResponse.studentId.isNullOrEmpty()) {
-                Toast.makeText(baseContext, "Registration successful", Toast.LENGTH_LONG).show()
+            userViewModel.registerUser(regRequest)
+            userViewModel.registrationLiveData.observe(this, { regResponse ->
+                if (!regResponse.studentId.isNullOrEmpty()) {
+                    Toast.makeText(baseContext, "Registration successful", Toast.LENGTH_LONG).show()
                 }
             })
-        userViewModel.regFailedLiveData.observe(this, { error ->
-            Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-        })
+            userViewModel.regFailedLiveData.observe(this, { error ->
+                Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
+            })
 
+        }
     }
 }
 
